@@ -1,0 +1,269 @@
+# NGAP - the control conversation between a 5G radio site and the core network.
+#
+# `name` is generated from the Wireshark dissector by scripts/sync_codes.py.
+# `plain` is written by hand (or by the pcap-learn skill) and is the only
+# thing the report is allowed to say about a procedure. null = not yet known.
+protocol: ngap
+name: NG Application Protocol
+plain_name: the control conversation between a radio site and the core network
+transport: SCTP port 38412
+code_field: ngap.procedureCode
+spec: 3GPP TS 38.413
+codes:
+  0:
+    name: "id-AMFConfigurationUpdate"
+    plain: "The core network told a radio site that its own configuration had changed."
+    reply: expected
+  1:
+    name: "id-AMFStatusIndication"
+    plain: "The core network reported a change in its own availability."
+    reply: none
+  2:
+    name: "id-CellTrafficTrace"
+    plain: null
+  3:
+    name: "id-DeactivateTrace"
+    plain: null
+  4:
+    name: "id-DownlinkNASTransport"
+    plain: "The core network sent a message to a phone, relayed by the radio site."
+    reply: none
+  5:
+    name: "id-DownlinkNonUEAssociatedNRPPaTransport"
+    plain: null
+  6:
+    name: "id-DownlinkRANConfigurationTransfer"
+    plain: null
+  7:
+    name: "id-DownlinkRANStatusTransfer"
+    plain: null
+  8:
+    name: "id-DownlinkUEAssociatedNRPPaTransport"
+    plain: null
+  9:
+    name: "id-ErrorIndication"
+    plain: "One side reported that it could not make sense of a message it received."
+    reply: none
+  10:
+    name: "id-HandoverCancel"
+    plain: "A move of a phone to another radio site was called off."
+    reply: expected
+  11:
+    name: "id-HandoverNotification"
+    plain: "A radio site confirmed that a phone had finished moving to it."
+    reply: none
+  12:
+    name: "id-HandoverPreparation"
+    plain: "A radio site asked the core network to prepare moving a phone to another site."
+    reply: expected
+  13:
+    name: "id-HandoverResourceAllocation"
+    plain: "The core network asked a radio site to reserve room for a phone that is moving in."
+    reply: expected
+  14:
+    name: "id-InitialContextSetup"
+    plain: "The core network gave the radio site everything it needs to serve this phone, including its security settings."
+    reply: expected
+  15:
+    name: "id-InitialUEMessage"
+    plain: "A phone appeared at a radio site, and the site passed its first message to the core network."
+    reply: none
+  16:
+    name: "id-LocationReportingControl"
+    plain: null
+  17:
+    name: "id-LocationReportingFailureIndication"
+    plain: null
+  18:
+    name: "id-LocationReport"
+    plain: null
+  19:
+    name: "id-NASNonDeliveryIndication"
+    plain: "A message meant for a phone could not be delivered."
+    reply: none
+  20:
+    name: "id-NGReset"
+    plain: "One side cleared out its records for a set of phones and asked the other to do the same."
+    reply: expected
+  21:
+    name: "id-NGSetup"
+    plain: "A radio site introduced itself to the core network and asked to be allowed to serve traffic."
+    reply: expected
+  22:
+    name: "id-OverloadStart"
+    plain: "The core network said it was overloaded and asked the radio site to hold back traffic."
+    reply: none
+  23:
+    name: "id-OverloadStop"
+    plain: "The core network said it was no longer overloaded and traffic could resume."
+    reply: none
+  24:
+    name: "id-Paging"
+    plain: "The core network asked radio sites to call out for a phone, because something was waiting for it."
+    reply: none
+  25:
+    name: "id-PathSwitchRequest"
+    plain: "A phone arrived at a new radio site, which asked the core network to redirect its traffic there."
+    reply: expected
+  26:
+    name: "id-PDUSessionResourceModify"
+    plain: "The core network asked the radio site to change the capacity reserved for a phone's data."
+    reply: expected
+  27:
+    name: "id-PDUSessionResourceModifyIndication"
+    plain: "A radio site asked to change the capacity reserved for a phone's data."
+    reply: expected
+  28:
+    name: "id-PDUSessionResourceRelease"
+    plain: "The core network asked the radio site to give back the capacity reserved for a phone's data."
+    reply: expected
+  29:
+    name: "id-PDUSessionResourceSetup"
+    plain: "The core network asked the radio site to set aside radio and transport capacity so a phone can carry data."
+    reply: expected
+  30:
+    name: "id-PDUSessionResourceNotify"
+    plain: "The radio site reported that something changed about a phone's data connection."
+    reply: none
+  31:
+    name: "id-PrivateMessage"
+    plain: null
+  32:
+    name: "id-PWSCancel"
+    plain: null
+  33:
+    name: "id-PWSFailureIndication"
+    plain: null
+  34:
+    name: "id-PWSRestartIndication"
+    plain: null
+  35:
+    name: "id-RANConfigurationUpdate"
+    plain: "A radio site told the core network that its own configuration had changed."
+    reply: expected
+  36:
+    name: "id-RerouteNASRequest"
+    plain: null
+  37:
+    name: "id-RRCInactiveTransitionReport"
+    plain: "The radio site reported that a phone was parked in a low-power state, or woken from it."
+    reply: none
+  38:
+    name: "id-TraceFailureIndication"
+    plain: null
+  39:
+    name: "id-TraceStart"
+    plain: null
+  40:
+    name: "id-UEContextModification"
+    plain: "The core network asked the radio site to change how it is serving a phone."
+    reply: expected
+  41:
+    name: "id-UEContextRelease"
+    plain: "The core network told the radio site to forget about a phone and free its resources."
+    reply: expected
+  42:
+    name: "id-UEContextReleaseRequest"
+    plain: "The radio site asked the core network for permission to let go of a phone."
+    reply: none
+  43:
+    name: "id-UERadioCapabilityCheck"
+    plain: null
+  44:
+    name: "id-UERadioCapabilityInfoIndication"
+    plain: "The radio site passed on the list of radio features a phone supports."
+    reply: none
+  45:
+    name: "id-UETNLABindingRelease"
+    plain: null
+  46:
+    name: "id-UplinkNASTransport"
+    plain: "A phone sent a message to the core network, relayed by the radio site."
+    reply: none
+  47:
+    name: "id-UplinkNonUEAssociatedNRPPaTransport"
+    plain: null
+  48:
+    name: "id-UplinkRANConfigurationTransfer"
+    plain: null
+  49:
+    name: "id-UplinkRANStatusTransfer"
+    plain: null
+  50:
+    name: "id-UplinkUEAssociatedNRPPaTransport"
+    plain: null
+  51:
+    name: "id-WriteReplaceWarning"
+    plain: null
+  52:
+    name: "id-SecondaryRATDataUsageReport"
+    plain: null
+  53:
+    name: "id-UplinkRIMInformationTransfer"
+    plain: null
+  54:
+    name: "id-DownlinkRIMInformationTransfer"
+    plain: null
+  55:
+    name: "id-RetrieveUEInformation"
+    plain: null
+  56:
+    name: "id-UEInformationTransfer"
+    plain: null
+  57:
+    name: "id-RANCPRelocationIndication"
+    plain: null
+  58:
+    name: "id-UEContextResume"
+    plain: null
+  59:
+    name: "id-UEContextSuspend"
+    plain: null
+  60:
+    name: "id-UERadioCapabilityIDMapping"
+    plain: null
+  61:
+    name: "id-HandoverSuccess"
+    plain: null
+  62:
+    name: "id-UplinkRANEarlyStatusTransfer"
+    plain: null
+  63:
+    name: "id-DownlinkRANEarlyStatusTransfer"
+    plain: null
+  64:
+    name: "id-AMFCPRelocationIndication"
+    plain: null
+  65:
+    name: "id-ConnectionEstablishmentIndication"
+    plain: null
+  66:
+    name: "id-BroadcastSessionModification"
+    plain: null
+  67:
+    name: "id-BroadcastSessionRelease"
+    plain: null
+  68:
+    name: "id-BroadcastSessionSetup"
+    plain: null
+  69:
+    name: "id-DistributionSetup"
+    plain: null
+  70:
+    name: "id-DistributionRelease"
+    plain: null
+  71:
+    name: "id-MulticastSessionActivation"
+    plain: null
+  72:
+    name: "id-MulticastSessionDeactivation"
+    plain: null
+  73:
+    name: "id-MulticastSessionUpdate"
+    plain: null
+  74:
+    name: "id-MulticastGroupPaging"
+    plain: null
+  75:
+    name: "id-BroadcastSessionReleaseRequired"
+    plain: null

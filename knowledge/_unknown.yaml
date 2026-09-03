@@ -1,0 +1,7 @@
+# The learning queue.
+#
+# Every message type seen in a capture that has no plain-English description
+# in knowledge/protocols/ lands here, appended by scripts/3_render.py. Run the
+# pcap-learn skill to work through it. Entries are removed once the matching
+# `plain` field is filled in.
+unknown: []

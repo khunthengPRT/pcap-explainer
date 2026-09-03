@@ -1,0 +1,31 @@
+# Who is who on the network.
+#
+# The survey step (scripts/survey.sh) lists every IP address in a capture and
+# tells you which ones are missing from this file. Add them before rendering a
+# report: an address that is not here shows up in the report as a bare IP,
+# which is exactly the jargon we are trying to remove.
+#
+#   name  - what to call it in the report, in plain words
+#   role  - one of: radio, core, forwarder, subscriber, other
+#   note  - optional, one line of context for the reader
+nodes:
+  10.10.1.10:
+    name: "Base station brain (site A)"
+    role: radio
+    note: "Central unit of the split base station at site A"
+  10.10.1.11:
+    name: "Base station antenna side (site A)"
+    role: radio
+    note: "Distributed unit of the split base station at site A"
+  10.10.2.20:
+    name: "Core network access manager"
+    role: core
+    note: "Handles phones joining the network and staying reachable"
+  10.10.2.21:
+    name: "Core network session manager"
+    role: core
+    note: "Decides the rules for each subscriber's data connection"
+  10.10.2.30:
+    name: "Traffic forwarder"
+    role: forwarder
+    note: "Carries subscriber data between the base stations and the internet"

@@ -1,0 +1,273 @@
+# F1AP - the control conversation between the two halves of a split base
+# station: the radio unit (DU) and the central unit (CU).
+protocol: f1ap
+name: F1 Application Protocol
+plain_name: the conversation between the antenna side and the brain of a base station
+transport: SCTP port 38472
+code_field: f1ap.procedureCode
+spec: 3GPP TS 38.473
+codes:
+  0:
+    name: "id-Reset"
+    plain: "One side cleared out its records and asked the other to do the same."
+    reply: expected
+  1:
+    name: "id-F1Setup"
+    plain: "The antenna side introduced itself to the base station's brain and asked to join it."
+    reply: expected
+  2:
+    name: "id-ErrorIndication"
+    plain: "One side reported that it could not make sense of a message it received."
+    reply: none
+  3:
+    name: "id-gNBDUConfigurationUpdate"
+    plain: "The antenna side reported a change to its cells or configuration."
+    reply: expected
+  4:
+    name: "id-gNBCUConfigurationUpdate"
+    plain: "The brain of the base station reported a change to its own configuration."
+    reply: expected
+  5:
+    name: "id-UEContextSetup"
+    plain: "The brain asked the antenna side to set up the radio link for a phone."
+    reply: expected
+  6:
+    name: "id-UEContextRelease"
+    plain: "A phone's radio resources were released at the antenna side."
+    reply: expected
+  7:
+    name: "id-UEContextModification"
+    plain: "The brain asked the antenna side to change a phone's radio setup."
+    reply: expected
+  8:
+    name: "id-UEContextModificationRequired"
+    plain: "The antenna side reported that a phone's radio setup had to change."
+    reply: expected
+  9:
+    name: "id-UEMobilityCommand"
+    plain: null
+  10:
+    name: "id-UEContextReleaseRequest"
+    plain: "The antenna side asked to let go of a phone."
+    reply: none
+  11:
+    name: "id-InitialULRRCMessageTransfer"
+    plain: "A phone made first contact with the antenna side, which passed it to the brain."
+    reply: none
+  12:
+    name: "id-DLRRCMessageTransfer"
+    plain: "The brain sent a radio-control message down to a phone."
+    reply: none
+  13:
+    name: "id-ULRRCMessageTransfer"
+    plain: "A phone sent a radio-control message up to the brain."
+    reply: none
+  14:
+    name: "id-privateMessage"
+    plain: null
+  15:
+    name: "id-UEInactivityNotification"
+    plain: "The antenna side reported that a phone has gone quiet."
+    reply: none
+  16:
+    name: "id-GNBDUResourceCoordination"
+    plain: null
+  17:
+    name: "id-SystemInformationDeliveryCommand"
+    plain: null
+  18:
+    name: "id-Paging"
+    plain: "The base station was asked to call out for a phone."
+    reply: none
+  19:
+    name: "id-Notify"
+    plain: null
+  20:
+    name: "id-WriteReplaceWarning"
+    plain: null
+  21:
+    name: "id-PWSCancel"
+    plain: null
+  22:
+    name: "id-PWSRestartIndication"
+    plain: null
+  23:
+    name: "id-PWSFailureIndication"
+    plain: null
+  24:
+    name: "id-GNBDUStatusIndication"
+    plain: "The antenna side reported a change in its own status."
+    reply: none
+  25:
+    name: "id-RRCDeliveryReport"
+    plain: "The antenna side confirmed that a radio-control message reached the phone."
+    reply: none
+  26:
+    name: "id-F1Removal"
+    plain: "One half of the base station asked to disconnect from the other."
+    reply: expected
+  27:
+    name: "id-NetworkAccessRateReduction"
+    plain: null
+  28:
+    name: "id-TraceStart"
+    plain: null
+  29:
+    name: "id-DeactivateTrace"
+    plain: null
+  30:
+    name: "id-DUCURadioInformationTransfer"
+    plain: null
+  31:
+    name: "id-CUDURadioInformationTransfer"
+    plain: null
+  32:
+    name: "id-BAPMappingConfiguration"
+    plain: null
+  33:
+    name: "id-GNBDUResourceConfiguration"
+    plain: null
+  34:
+    name: "id-IABTNLAddressAllocation"
+    plain: null
+  35:
+    name: "id-IABUPConfigurationUpdate"
+    plain: null
+  36:
+    name: "id-resourceStatusReportingInitiation"
+    plain: null
+  37:
+    name: "id-resourceStatusReporting"
+    plain: null
+  38:
+    name: "id-accessAndMobilityIndication"
+    plain: null
+  39:
+    name: "id-accessSuccess"
+    plain: null
+  40:
+    name: "id-cellTrafficTrace"
+    plain: null
+  41:
+    name: "id-PositioningMeasurementExchange"
+    plain: null
+  42:
+    name: "id-PositioningAssistanceInformationControl"
+    plain: null
+  43:
+    name: "id-PositioningAssistanceInformationFeedback"
+    plain: null
+  44:
+    name: "id-PositioningMeasurementReport"
+    plain: null
+  45:
+    name: "id-PositioningMeasurementAbort"
+    plain: null
+  46:
+    name: "id-PositioningMeasurementFailureIndication"
+    plain: null
+  47:
+    name: "id-PositioningMeasurementUpdate"
+    plain: null
+  48:
+    name: "id-TRPInformationExchange"
+    plain: null
+  49:
+    name: "id-PositioningInformationExchange"
+    plain: null
+  50:
+    name: "id-PositioningActivation"
+    plain: null
+  51:
+    name: "id-PositioningDeactivation"
+    plain: null
+  52:
+    name: "id-E-CIDMeasurementInitiation"
+    plain: null
+  53:
+    name: "id-E-CIDMeasurementFailureIndication"
+    plain: null
+  54:
+    name: "id-E-CIDMeasurementReport"
+    plain: null
+  55:
+    name: "id-E-CIDMeasurementTermination"
+    plain: null
+  56:
+    name: "id-PositioningInformationUpdate"
+    plain: null
+  57:
+    name: "id-ReferenceTimeInformationReport"
+    plain: null
+  58:
+    name: "id-ReferenceTimeInformationReportingControl"
+    plain: null
+  59:
+    name: "id-BroadcastContextSetup"
+    plain: null
+  60:
+    name: "id-BroadcastContextRelease"
+    plain: null
+  61:
+    name: "id-BroadcastContextReleaseRequest"
+    plain: null
+  62:
+    name: "id-BroadcastContextModification"
+    plain: null
+  63:
+    name: "id-MulticastGroupPaging"
+    plain: null
+  64:
+    name: "id-MulticastContextSetup"
+    plain: null
+  65:
+    name: "id-MulticastContextRelease"
+    plain: null
+  66:
+    name: "id-MulticastContextReleaseRequest"
+    plain: null
+  67:
+    name: "id-MulticastContextModification"
+    plain: null
+  68:
+    name: "id-MulticastDistributionSetup"
+    plain: null
+  69:
+    name: "id-MulticastDistributionRelease"
+    plain: null
+  70:
+    name: "id-PDCMeasurementInitiation"
+    plain: null
+  71:
+    name: "id-PDCMeasurementReport"
+    plain: null
+  72:
+    name: "id-PDCMeasurementInitiationRequest"
+    plain: null
+  73:
+    name: "id-PDCMeasurementInitiationResponse"
+    plain: null
+  74:
+    name: "id-PDCMeasurementInitiationFailure"
+    plain: null
+  75:
+    name: "id-pRSConfigurationExchange"
+    plain: null
+  76:
+    name: "id-measurementPreconfiguration"
+    plain: null
+  77:
+    name: "id-measurementActivation"
+    plain: null
+  78:
+    name: "id-QoEInformationTransfer"
+    plain: null
+  79:
+    name: "id-PDCMeasurementTerminationCommand"
+    plain: null
+  80:
+    name: "id-PDCMeasurementFailureIndication"
+    plain: null
+  81:
+    name: "id-PosSystemInformationDeliveryCommand"
+    plain: null

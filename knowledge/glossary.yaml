@@ -1,0 +1,46 @@
+# The only technical words allowed to appear in a report, and what each one
+# means in plain English. Anything else gets flagged by scripts/3_render.py
+# and must be rewritten before the report goes out.
+terms:
+  base station:
+    plain: "the equipment on a mast or rooftop that phones talk to over the air"
+  core network:
+    plain: "the operator's central systems that decide who may connect and where their traffic goes"
+  radio site:
+    plain: "one physical location with base station equipment"
+  phone:
+    plain: "any device using the network - a handset, a router, a sensor"
+  session:
+    plain: "one subscriber's data connection, from the moment it is set up to the moment it ends"
+  tunnel:
+    plain: "the path a subscriber's traffic takes across the operator's own network"
+  traffic forwarder:
+    plain: "the equipment that actually moves subscriber data towards the internet"
+  handover:
+    plain: "moving a phone from one base station to another without dropping its connection"
+  paging:
+    plain: "calling out across an area to find a phone that is idle"
+  capacity:
+    plain: "the radio and network room set aside for one subscriber's traffic"
+# Words that must never reach the reader. If the pipeline produces one, the
+# sentence is wrong and needs rewriting, not a footnote.
+banned:
+  - gNB
+  - DU
+  - CU
+  - AMF
+  - SMF
+  - UPF
+  - UE
+  - NAS
+  - RRC
+  - PDU
+  - TEID
+  - SEID
+  - NGAP
+  - F1AP
+  - PFCP
+  - GTP
+  - SCTP
+  - bearer
+  - QoS
