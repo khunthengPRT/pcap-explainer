@@ -1,0 +1,82 @@
+# What equipment exists, and what to call it. No addresses live here.
+#
+# Every lab runs the same equipment; only the numbering changes. So the
+# descriptions - the part that took thought to write and that the report
+# actually prints - live here, committed and shared, while the addresses live
+# in a lab profile that never leaves the machine it was written on.
+# See labs/README.md.
+#
+# A node is one piece of equipment:
+#
+#   name        what to call it in the report, in plain words
+#   role        one of: radio, core, forwarder, subscriber, other
+#   note        optional, one line of context for the reader
+#   interfaces  optional; the named links it answers on. The value is a short
+#               phrase added in brackets after the name, so a box with two
+#               legs in a capture reads as two distinct rows. Leave the value
+#               empty to print the bare name.
+#
+# The ids on the left (gnb-cu, upf, ...) are what a lab profile points at.
+# They are internal labels and never reach the report.
+nodes:
+  gnb-du:
+    name: "Base station antenna side"
+    role: radio
+    note: "The radio end of the split base station, closest to the phones"
+    interfaces:
+      f1: ""
+
+  gnb-cu:
+    name: "Base station brain"
+    role: radio
+    note: "The controlling end of the split base station"
+    interfaces:
+      f1: "antenna link"
+      n2: "core signalling link"
+      n3: "subscriber traffic link"
+
+  core:
+    name: "Core network"
+    role: core
+    note: "Decides who may connect and where their traffic goes"
+    interfaces:
+      n3: "radio side"
+      n6: "internet side"
+
+  amf:
+    name: "Core network access manager"
+    role: core
+    note: "Handles phones joining the network and staying reachable"
+    interfaces:
+      n2: ""
+      sbi: "internal"
+
+  smf:
+    name: "Core network session manager"
+    role: core
+    note: "Decides the rules for each subscriber's data connection"
+    interfaces:
+      n4: ""
+      sbi: "internal"
+
+  upf:
+    name: "Traffic forwarder"
+    role: forwarder
+    note: "Carries subscriber data between the base stations and the internet"
+    interfaces:
+      n3: "radio side"
+      n4: "control side"
+      n6: "internet side"
+      sbi: "internal"
+
+  core-function:
+    name: "A core network function"
+    role: core
+    note: "One of the core's internal services, not yet identified individually"
+    interfaces:
+      sbi: ""
+
+  subscriber:
+    name: "A subscriber device"
+    role: subscriber
+    note: "A phone or other device using the network"

@@ -1,9 +1,17 @@
-# Who is who on the network.
+# The older flat format: one address carrying its own name.
 #
-# The survey step (scripts/survey.sh) lists every IP address in a capture and
-# tells you which ones are missing from this file. Add them before rendering a
-# report: an address that is not here shows up in the report as a bare IP,
-# which is exactly the jargon we are trying to remove.
+# Kept for two reasons. It is the fallback when no lab has been chosen, and it
+# is what the tests render against - the numbering below is invented, so the
+# golden reports in tests/expected/ can be committed safely.
+#
+# For real work prefer the split form, which shares the descriptions between
+# labs and keeps the addresses out of the repository:
+#
+#   knowledge/topology.yaml            the equipment and its names (committed)
+#   labs/<lab>.yaml                    address -> equipment      (never committed)
+#
+# See knowledge/addresses.example.yaml and labs/README.md. This format cannot
+# be shared between labs, which is the whole reason the split exists.
 #
 #   name  - what to call it in the report, in plain words
 #   role  - one of: radio, core, forwarder, subscriber, other

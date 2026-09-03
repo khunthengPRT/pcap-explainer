@@ -7,6 +7,8 @@ from pathlib import Path
 
 import yaml
 
+from . import nodes as _nodes
+
 ROOT = Path(__file__).resolve().parent.parent.parent
 KNOWLEDGE = ROOT / "knowledge"
 
@@ -19,9 +21,13 @@ def _load(path, default):
     return yaml.safe_load(path.read_text()) or default
 
 
-def load_nodes():
-    """{ip: {name, role, note}} - who is who."""
-    return _load(KNOWLEDGE / "nodes.yaml", {}).get("nodes") or {}
+def load_nodes(profile=None, lab=None):
+    """Who is who, for one lab. Returns a nodes.NodeTable.
+
+    Which lab is decided by scripts/lib/nodes.py, never guessed from the
+    capture - see the note there about labs reusing addresses.
+    """
+    return _nodes.load(profile, lab)
 
 
 def load_glossary():
@@ -63,9 +69,7 @@ def describe(protocols, proto, code, block="codes"):
 
 def node_name(nodes, ip):
     """Plain-English name for an address, or the bare address if unknown."""
-    if not ip:
-        return "unknown"
-    return (nodes.get(ip) or {}).get("name") or ip
+    return nodes.name(ip)
 
 
 def record_unknown(entries):

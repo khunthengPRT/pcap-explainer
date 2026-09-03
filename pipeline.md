@@ -10,7 +10,9 @@ bash scripts/survey.sh capture.pcap
 ```
 
 Wraps `capinfos` and `tshark -z conv,ip -z io,phs`, then checks every address
-against `knowledge/nodes.yaml` and exits non-zero if any is unnamed.
+against the active lab profile and exits non-zero if any is unnamed. Pass
+`--nodes PATH`, or set `$PCAP_LAB`, to say which lab this capture came from;
+it is never inferred from the addresses in the capture. See `labs/README.md`.
 
 ## Stage 1 - extract
 

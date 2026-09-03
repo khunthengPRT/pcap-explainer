@@ -53,17 +53,56 @@ Needs Python 3.9+, `pyyaml`, and `tshark` (Debian/Ubuntu:
 bash scripts/survey.sh capture.pcap      # what is in here, and do we know who is who?
 ```
 
-The survey fails if the capture contains addresses that are not named in
-`knowledge/nodes.yaml`. Name them first - a report full of IP addresses is
-the thing this project exists to avoid.
+The survey fails if the capture contains addresses the active lab profile
+does not name. Name them first - a report full of IP addresses is the thing
+this project exists to avoid.
 
 Then run the three stages above, or ask Claude: `/explain capture.pcap`.
+
+## Captures from more than one lab
+
+Labs run the same equipment on different numbering, so who-is-who is split in
+two:
+
+- `knowledge/topology.yaml` - the equipment and its plain-English names.
+  Committed, shared by every lab, and contains no addresses.
+- a **lab profile** - which address is which piece of equipment, and nothing
+  else. Local to the machine it was written on, never committed.
+
+```bash
+mkdir -p ~/.config/pcap-explainer/labs
+cp knowledge/addresses.example.yaml ~/.config/pcap-explainer/labs/node-lab-1.yaml
+export PCAP_LAB=node-lab-1
+bash scripts/survey.sh capture.pcap
+```
+
+A profile is a list of numbers pointing at equipment ids, so improving a
+description benefits every lab at once:
+
+```yaml
+addresses:
+  10.1.3.1: core.n3          # subnets work too, most specific wins
+  10.1.4.1: gnb-cu.f1
+  1.1.1.0/24: subscriber
+```
+
+The profile is chosen by `--nodes`, then `$PCAP_NODES`, then `$PCAP_LAB`; it
+is never guessed from the capture. Two labs can reuse an address for
+different equipment, so a guess here would mislabel silently - and a report
+whose equipment names are wrong looks exactly like one whose names are right.
+If `$PCAP_LAB` names a profile that does not exist, the run stops rather than
+falling back. See [`labs/README.md`](labs/README.md).
+
+For a report that is leaving your machine, `3_render.py --redact-addresses`
+prints the names without the numbering.
 
 ## What is where
 
 | Path | What it holds |
 |------|---------------|
-| `knowledge/nodes.yaml` | Which address is which piece of equipment |
+| `knowledge/topology.yaml` | The equipment and its names, shared by every lab |
+| `knowledge/addresses.example.yaml` | The lab profile to copy: address -> equipment |
+| `labs/` | Your lab profiles. Gitignored, except the README |
 | `knowledge/protocols/` | What each message type means, in plain English |
 | `knowledge/glossary.yaml` | The only technical words allowed in a report |
 | `knowledge/_unknown.yaml` | Message types still waiting for a description |
@@ -82,7 +121,10 @@ python scripts/sync_codes.py         # refresh spec names after a tshark upgrade
 ```
 
 `samples/lab-session.pcap` is built by `tests/make_sample.py`, not recorded,
-so nothing here comes from a real network.
+so nothing here comes from a real network. `tests/check_no_lab_data.py` keeps
+it that way: it reads whichever lab profiles exist on your machine and fails
+if any of their addresses have reached a tracked file - including inside the
+checked-in capture, where an address is four bytes rather than text.
 
 ## Known limits
 

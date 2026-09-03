@@ -14,12 +14,19 @@ Turn a capture into documentation. Never read raw packets into context.
   benefit.
 - Run `bash tests/run_tests.sh` after changing anything in `scripts/` or
   `knowledge/`.
+- Never commit a lab's addressing. Names and descriptions go in
+  `knowledge/topology.yaml`, which is shared; addresses go in a lab profile
+  under `labs/` or `~/.config/pcap-explainer/labs/`, which is not. Anything
+  you write into a tracked file — a test fixture, a sample, an example — uses
+  made-up numbering.
 
 ## Steps
 
 1. Survey: `bash scripts/survey.sh <pcap>` — it exits non-zero if any address
-   is missing from `knowledge/nodes.yaml`. Add them, asking the user when you
-   cannot tell what a piece of equipment is.
+   is missing from the active lab profile. Add them, asking the user when you
+   cannot tell what a piece of equipment is. If the user has more than one lab,
+   ask which one this capture is from and pass `--nodes` or set `$PCAP_LAB`;
+   never infer it from the addresses.
 2. Extract: `python scripts/1_extract.py <pcap> out/events.csv`
 3. Sessionize: `python scripts/2_sessionize.py out/events.csv out/flows.json`
 4. Render: `python scripts/3_render.py out/flows.json out/report.md --title "<network>"`
@@ -33,6 +40,23 @@ Turn a capture into documentation. Never read raw packets into context.
 
 See `references/report-template.md`. One page: what happened, who was
 involved, the timeline, what went wrong, what it means.
+
+## Who is who
+
+Split in two, because every lab runs the same equipment on different numbering:
+
+- `knowledge/topology.yaml` — the equipment and its plain-English names.
+  Committed and shared. Fix a description here and every lab benefits.
+- a lab profile — address → equipment id, nothing else. Local, never
+  committed.
+
+One profile is loaded per run, chosen on purpose (`--nodes`, `$PCAP_NODES`,
+`$PCAP_LAB`). Loading the wrong one is not a visible error — the report simply
+names the wrong equipment — which is why a `$PCAP_LAB` that matches no profile
+stops the run instead of falling back.
+
+For a report leaving the user's machine, offer
+`3_render.py --redact-addresses`.
 
 ## The knowledge base
 
