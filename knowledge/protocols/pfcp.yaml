@@ -1,0 +1,178 @@
+# PFCP - how the core network tells the user-plane forwarder which traffic to
+# carry for which subscriber, and on what terms.
+protocol: pfcp
+name: Packet Forwarding Control Protocol
+plain_name: the core network telling the traffic forwarder what to carry
+transport: UDP port 8805
+code_field: pfcp.msg_type
+spec: 3GPP TS 29.244
+codes:
+  0:
+    name: "Reserved"
+    plain: null
+  1:
+    name: "PFCP Heartbeat Request"
+    plain: "A keep-alive check between the core network and the traffic forwarder."
+  2:
+    name: "PFCP Heartbeat Response"
+    plain: "The other side answered the keep-alive check, so the link is healthy."
+  3:
+    name: "PFCP PFD Management Request"
+    plain: null
+  4:
+    name: "PFCP PFD Management Response"
+    plain: null
+  5:
+    name: "PFCP Association Setup Request"
+    plain: "The core network and the traffic forwarder introduced themselves and agreed to work together."
+  6:
+    name: "PFCP Association Setup Response"
+    plain: "The traffic forwarder accepted the working relationship."
+  7:
+    name: "PFCP Association Update Request"
+    plain: "One side asked to change the terms of the working relationship."
+  8:
+    name: "PFCP Association Update Response"
+    plain: "The change to the working relationship was answered."
+  9:
+    name: "PFCP Association Release Request"
+    plain: "One side asked to end the working relationship."
+  10:
+    name: "PFCP Association Release Response"
+    plain: "The end of the working relationship was confirmed."
+  11:
+    name: "PFCP Version Not Supported Response"
+    plain: "One side said it does not speak the version of the protocol the other used."
+  12:
+    name: "PFCP Node Report Request"
+    plain: "The traffic forwarder reported a problem with one of its connections."
+  13:
+    name: "PFCP Node Report Response"
+    plain: "The report about the connection problem was acknowledged."
+  14:
+    name: "PFCP Session Set Deletion Request"
+    plain: null
+  15:
+    name: "PFCP Session Set Deletion Response"
+    plain: null
+  16:
+    name: "PFCP Session Set Modification Request"
+    plain: null
+  17:
+    name: "PFCP Session Set Modification Response"
+    plain: null
+  50:
+    name: "PFCP Session Establishment Request"
+    plain: "The core network asked the traffic forwarder to start carrying one subscriber's traffic, and gave it the rules for doing so."
+  51:
+    name: "PFCP Session Establishment Response"
+    plain: "The traffic forwarder confirmed it is now carrying that subscriber's traffic."
+  52:
+    name: "PFCP Session Modification Request"
+    plain: "The core network changed the rules for carrying one subscriber's traffic."
+  53:
+    name: "PFCP Session Modification Response"
+    plain: "The traffic forwarder confirmed the changed rules."
+  54:
+    name: "PFCP Session Deletion Request"
+    plain: "The core network asked the traffic forwarder to stop carrying one subscriber's traffic."
+  55:
+    name: "PFCP Session Deletion Response"
+    plain: "The traffic forwarder confirmed it has stopped, and reported the final usage."
+  56:
+    name: "PFCP Session Report Request"
+    plain: "The traffic forwarder reported something about a subscriber's traffic, such as a usage limit being reached."
+  57:
+    name: "PFCP Session Report Response"
+    plain: "The core network acknowledged the traffic forwarder's report."
+causes:
+  0:
+    name: "Reserved"
+    plain: null
+  1:
+    name: "Request accepted(success)"
+    plain: "The request was accepted."
+  2:
+    name: "More Usage Report to send"
+    plain: "Accepted, and there is more usage information still to come."
+  3:
+    name: "Request partially accepted"
+    plain: "Only part of the request was accepted."
+  64:
+    name: "Request rejected(reason not specified)"
+    plain: "The request was rejected, without saying why."
+  65:
+    name: "Session context not found"
+    plain: "The request referred to a subscriber connection the forwarder has no record of."
+  66:
+    name: "Mandatory IE missing"
+    plain: "The request was missing something it is required to contain."
+  67:
+    name: "Conditional IE missing"
+    plain: null
+  68:
+    name: "Invalid length"
+    plain: "The request was the wrong size and could not be read."
+  69:
+    name: "Mandatory IE incorrect"
+    plain: "Part of the request was present but wrong."
+  70:
+    name: "Invalid Forwarding Policy"
+    plain: null
+  71:
+    name: "Invalid F-TEID allocation option"
+    plain: null
+  72:
+    name: "No established PFCP Association"
+    plain: "The two sides had no working relationship set up, so the request could not be handled."
+  73:
+    name: "Rule creation / modification Failure"
+    plain: "The forwarder could not apply the traffic rules it was given."
+  74:
+    name: "PFCP entity in congestion"
+    plain: "The forwarder is overloaded."
+  75:
+    name: "No resources available"
+    plain: "The forwarder has no capacity left."
+  76:
+    name: "Service not supported"
+    plain: "The forwarder does not support what was asked of it."
+  77:
+    name: "System failure"
+    plain: "Something failed inside the forwarder."
+  78:
+    name: "Redirection Requested"
+    plain: null
+  79:
+    name: "All dynamic addresses are occupied"
+    plain: "There were no addresses left to give the subscriber."
+  80:
+    name: "Unknown Pre-defined Rule"
+    plain: null
+  81:
+    name: "Unknown Application ID"
+    plain: null
+  82:
+    name: "L2TP tunnel Establishment failure"
+    plain: null
+  83:
+    name: "L2TP session Establishment failure"
+    plain: null
+  84:
+    name: "L2TP tunnel release"
+    plain: null
+  85:
+    name: "L2TP session release"
+    plain: null
+  86:
+    name: "PFCP session restoration failure"
+    plain: null
+  87:
+    name: "L2TP tunnel Establishment failure - Tunnel Auth Failure"
+    plain: null
+  88:
+    name: "L2TP Session Establishment failure - Session Auth Failure"
+    plain: null
+  89:
+    name: "L2TP tunnel Establishment failure - LNS not reachable"
+    plain: null

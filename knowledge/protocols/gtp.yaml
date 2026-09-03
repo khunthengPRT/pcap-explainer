@@ -1,0 +1,227 @@
+# GTP-U - the tunnels that actually carry a subscriber's data across the
+# operator's own network.
+protocol: gtp
+name: GPRS Tunnelling Protocol, user plane
+plain_name: the tunnels carrying subscriber traffic across the operator network
+transport: UDP port 2152
+code_field: gtp.message
+spec: 3GPP TS 29.281
+codes:
+  0:
+    name: "For future use"
+    plain: null
+  1:
+    name: "Echo request"
+    plain: "A keep-alive check between the two ends of a traffic tunnel."
+  2:
+    name: "Echo response"
+    plain: "The far end of the tunnel answered the keep-alive check."
+  3:
+    name: "Version not supported"
+    plain: null
+  4:
+    name: "Node alive request"
+    plain: null
+  5:
+    name: "Node alive response"
+    plain: null
+  6:
+    name: "Redirection request"
+    plain: null
+  7:
+    name: "Redirection response"
+    plain: null
+  16:
+    name: "Create PDP context request"
+    plain: null
+  17:
+    name: "Create PDP context response"
+    plain: null
+  18:
+    name: "Update PDP context request"
+    plain: null
+  19:
+    name: "Update PDP context response"
+    plain: null
+  20:
+    name: "Delete PDP context request"
+    plain: null
+  21:
+    name: "Delete PDP context response"
+    plain: null
+  22:
+    name: "Initiate PDP Context Activation Request"
+    plain: null
+  23:
+    name: "Initiate PDP Context Activation Response"
+    plain: null
+  24:
+    name: "Delete AA PDP Context Request"
+    plain: null
+  25:
+    name: "Delete AA PDP Context Response"
+    plain: null
+  26:
+    name: "Error indication"
+    plain: "One end received traffic for a tunnel it does not know about, so that traffic is being dropped."
+  27:
+    name: "PDU notification request"
+    plain: null
+  28:
+    name: "PDU notification response"
+    plain: null
+  29:
+    name: "PDU notification reject request"
+    plain: null
+  30:
+    name: "PDU notification reject response"
+    plain: null
+  31:
+    name: "Supported extension header notification"
+    plain: "One end listed the optional tunnel features it understands."
+  32:
+    name: "Send routing information for GPRS request"
+    plain: null
+  33:
+    name: "Send routing information for GPRS response"
+    plain: null
+  34:
+    name: "Failure report request"
+    plain: null
+  35:
+    name: "Failure report response"
+    plain: null
+  36:
+    name: "Note MS GPRS present request"
+    plain: null
+  37:
+    name: "Note MS GPRS present response"
+    plain: null
+  48:
+    name: "Identification request"
+    plain: null
+  49:
+    name: "Identification response"
+    plain: null
+  50:
+    name: "SGSN context request"
+    plain: null
+  51:
+    name: "SGSN context response"
+    plain: null
+  52:
+    name: "SGSN context acknowledgement"
+    plain: null
+  53:
+    name: "Forward relocation request"
+    plain: null
+  54:
+    name: "Forward relocation response"
+    plain: null
+  55:
+    name: "Forward relocation complete"
+    plain: null
+  56:
+    name: "Relocation cancel request"
+    plain: null
+  57:
+    name: "Relocation cancel response"
+    plain: null
+  58:
+    name: "Forward SRNS context"
+    plain: null
+  59:
+    name: "Forward relocation complete acknowledge"
+    plain: null
+  60:
+    name: "Forward SRNS context acknowledge"
+    plain: null
+  61:
+    name: "UE Registration Query Request"
+    plain: null
+  62:
+    name: "UE Registration Query Response"
+    plain: null
+  70:
+    name: "RAN Information Relay"
+    plain: null
+  96:
+    name: "MBMS Notification Request"
+    plain: null
+  97:
+    name: "MBMS Notification Response"
+    plain: null
+  98:
+    name: "MBMS Notification Reject Request"
+    plain: null
+  99:
+    name: "MBMS Notification Reject Response"
+    plain: null
+  100:
+    name: "Create MBMS Context Request"
+    plain: null
+  101:
+    name: "Create MBMS Context Response"
+    plain: null
+  102:
+    name: "Update MBMS Context Request"
+    plain: null
+  103:
+    name: "Update MBMS Context Response"
+    plain: null
+  104:
+    name: "Delete MBMS Context Request"
+    plain: null
+  105:
+    name: "Delete MBMS Context Response"
+    plain: null
+  112:
+    name: "MBMS Registration Request"
+    plain: null
+  113:
+    name: "MBMS Registration Response"
+    plain: null
+  114:
+    name: "MBMS De-Registration Request"
+    plain: null
+  115:
+    name: "MBMS De-Registration Response"
+    plain: null
+  116:
+    name: "MBMS Session Start Request"
+    plain: null
+  117:
+    name: "MBMS Session Start Response"
+    plain: null
+  118:
+    name: "MBMS Session Stop Request"
+    plain: null
+  119:
+    name: "MBMS Session Stop Response"
+    plain: null
+  120:
+    name: "MBMS Session Update Request"
+    plain: null
+  121:
+    name: "MBMS Session Update Response"
+    plain: null
+  128:
+    name: "MS Info Change Notification Request"
+    plain: null
+  129:
+    name: "MS Info Change Notification Response"
+    plain: null
+  240:
+    name: "Data record transfer request"
+    plain: null
+  241:
+    name: "Data record transfer response"
+    plain: null
+  254:
+    name: "End Marker"
+    plain: "The last packet through an old tunnel, marking that traffic has moved to a new one."
+    carries_traffic: true
+  255:
+    name: "T-PDU"
+    plain: "Ordinary subscriber traffic travelling through a tunnel."
+    carries_traffic: true

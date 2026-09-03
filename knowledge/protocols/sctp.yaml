@@ -1,0 +1,87 @@
+# SCTP - the transport that carries the control conversations. We only look at
+# it to answer "did the two ends actually stay connected?".
+protocol: sctp
+name: Stream Control Transmission Protocol
+plain_name: the connection that carries the control conversations
+transport: IP protocol 132
+code_field: sctp.chunk_type
+spec: RFC 4960
+codes:
+  0:
+    name: "DATA"
+    plain: "Ordinary control traffic on an established connection."
+  1:
+    name: "INIT"
+    plain: "One side opened a connection to the other."
+  2:
+    name: "INIT_ACK"
+    plain: "The other side accepted the connection."
+  3:
+    name: "SACK"
+    plain: null
+  4:
+    name: "HEARTBEAT"
+    plain: "A keep-alive check on the connection."
+  5:
+    name: "HEARTBEAT_ACK"
+    plain: "The keep-alive check was answered, so the connection is alive."
+  6:
+    name: "ABORT"
+    plain: "One side tore the connection down abruptly. Anything in flight was lost."
+  7:
+    name: "SHUTDOWN"
+    plain: "One side closed the connection cleanly."
+  8:
+    name: "SHUTDOWN_ACK"
+    plain: null
+  9:
+    name: "ERROR"
+    plain: "One side reported a problem with the connection."
+  10:
+    name: "COOKIE_ECHO"
+    plain: null
+  11:
+    name: "COOKIE_ACK"
+    plain: null
+  12:
+    name: "ECNE"
+    plain: null
+  13:
+    name: "CWR"
+    plain: null
+  14:
+    name: "SHUTDOWN_COMPLETE"
+    plain: null
+  15:
+    name: "AUTH"
+    plain: null
+  16:
+    name: "NR_SACK"
+    plain: null
+  64:
+    name: "I_DATA"
+    plain: null
+  128:
+    name: "ASCONF_ACK"
+    plain: null
+  129:
+    name: "PKTDROP"
+    plain: null
+  130:
+    name: "RE_CONFIG"
+    plain: null
+  132:
+    name: "PAD"
+    plain: null
+  192:
+    name: "FORWARD_TSN"
+    plain: null
+  193:
+    name: "ASCONF"
+    plain: null
+  194:
+    name: "I_FORWARD_TSN"
+    plain: null
+  255:
+    name: "IETF_EXTENSION"
+    plain: null
