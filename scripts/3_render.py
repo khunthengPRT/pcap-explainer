@@ -8,6 +8,7 @@ learning rather than guessed at.
 
 Usage: python scripts/3_render.py <out/flows.json> <out/report.md>
                                   [--title "..."] [--no-learn]
+                                  [--nodes PATH] [--redact-addresses]
 """
 import argparse
 import json
@@ -18,6 +19,7 @@ from pathlib import Path
 
 sys.path.insert(0, str(Path(__file__).resolve().parent))
 from lib import knowledge  # noqa: E402
+from lib import nodes as node_lib  # noqa: E402
 
 UNRECOGNISED = "[unrecognised]"
 
@@ -114,19 +116,29 @@ def summary(data, nodes, failures):
     return " ".join(lines)
 
 
-def who_table(data, nodes):
-    rows = ["| Who | Address | What it does | Messages |",
-            "|-----|---------|--------------|----------|"]
+def who_table(data, nodes, redact=False):
+    """Who appeared in the capture. The address column is the one place a
+    report carries a lab's numbering, so it can be left out for a report that
+    is going somewhere else."""
+    header = "| Who | What it does | Messages |" if redact else \
+             "| Who | Address | What it does | Messages |"
+    rule = "|-----|--------------|----------|" if redact else \
+           "|-----|---------|--------------|----------|"
+    rows = [header, rule]
     unnamed = []
     for node in data["nodes"]:
         ip = node["ip"]
         entry = nodes.get(ip) or {}
         if not entry:
             unnamed.append(ip)
-        name = entry.get("name") or f"{ip} (not yet named)"
+        name = entry.get("name") or (nodes.name(ip) if redact
+                                     else f"{ip} (not yet named)")
         role = entry.get("note") or ROLE_TEXT.get(entry.get("role"), "")
         total = node["sent"] + node["received"]
-        rows.append(f"| {name} | {ip} | {role} | {total} |")
+        if redact:
+            rows.append(f"| {name} | {role} | {total} |")
+        else:
+            rows.append(f"| {name} | {ip} | {role} | {total} |")
     return "\n".join(rows), unnamed
 
 
@@ -185,7 +197,7 @@ def failure_lines(data, nodes, protocols):
     return lines
 
 
-def meaning_lines(data, failures, unnamed):
+def meaning_lines(data, failures, unnamed, profile=None):
     lines = []
     if failures:
         subjects = {flow["subject"] for flow in data["flows"]
@@ -221,10 +233,13 @@ def meaning_lines(data, failures, unnamed):
                 "the capture, which is worth checking against the timeline above."
             )
     if unnamed:
+        where = profile or "the lab node profile"
+        one = len(unnamed) == 1
         lines.append(
-            f"{plural(len(unnamed), 'address', 'es')} in this capture is not yet "
-            "named in the knowledge base, so it appears as a bare number above. "
-            "Add it to knowledge/nodes.yaml."
+            f"{plural(len(unnamed), 'address', 'es')} in this capture "
+            f"{'is' if one else 'are'} not yet named in the knowledge base, so "
+            f"{'it appears' if one else 'they appear'} as a bare number above. "
+            f"Add {'it' if one else 'them'} to {where}."
         )
     return lines
 
@@ -265,6 +280,10 @@ def main():
     parser.add_argument("--title", default="the captured network")
     parser.add_argument("--no-learn", action="store_true",
                         help="do not append gaps to knowledge/_unknown.yaml")
+    parser.add_argument("--redact-addresses", action="store_true",
+                        help="leave IP addresses out of the report, for a copy "
+                             "that is leaving this machine")
+    node_lib.add_argument(parser)
     args = parser.parse_args()
 
     path = Path(args.flows)
@@ -272,13 +291,21 @@ def main():
         sys.exit(f"flows file not found: {path}. Run scripts/2_sessionize.py first.")
     data = json.loads(path.read_text())
 
-    nodes = knowledge.load_nodes()
+    try:
+        nodes = knowledge.load_nodes(args.nodes)
+    except node_lib.ProfileError as error:
+        sys.exit(f"node profile: {error}")
+    # stderr, not the report: which lab this was is not the reader's business,
+    # and a report is the thing most likely to be forwarded on
+    print(f"naming equipment from {nodes.origin}", file=sys.stderr)
+    if args.redact_addresses:
+        nodes = nodes.redacted()
     terms, banned = knowledge.load_glossary()
     protocols = knowledge.load_protocols()
 
     failures = [flow for flow in data["flows"]
                 if flow["outcome"] in ("failed", "no reply")]
-    who, unnamed = who_table(data, nodes)
+    who, unnamed = who_table(data, nodes, args.redact_addresses)
 
     parts = [
         f"# What happened on {args.title}",
@@ -304,7 +331,7 @@ def main():
         ["Nothing in this capture failed."]
     parts += ["", "## What it means", ""]
     # blank lines between them so each reads as its own paragraph
-    for index, line in enumerate(meaning_lines(data, failures, unnamed)):
+    for index, line in enumerate(meaning_lines(data, failures, unnamed, nodes.where)):
         if index:
             parts.append("")
         parts.append(line)

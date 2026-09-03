@@ -1,0 +1,44 @@
+# A lab profile: which address is which piece of equipment, and nothing else.
+#
+# Copy this, do not edit it in place:
+#
+#   mkdir -p ~/.config/pcap-explainer/labs
+#   cp knowledge/addresses.example.yaml ~/.config/pcap-explainer/labs/node-lab-1.yaml
+#   export PCAP_LAB=node-lab-1
+#
+# Outside the repository is the recommended home for it - see labs/README.md
+# for why, and for the alternative if you would rather keep it in the tree.
+#
+# The values on the right are equipment ids from knowledge/topology.yaml,
+# optionally with the interface it answers on after a dot. The names, the roles
+# and the one-line descriptions all live there, shared by every lab, so this
+# file stays a bare list of numbers. A value that does not match the topology
+# is an error, not a warning - see scripts/lib/nodes.py.
+#
+# Subnets are allowed on the left, and the most specific match wins, so you can
+# hand a whole range to phones or to the core's containers and still name one
+# address inside it individually.
+#
+# The addresses below are the example numbering, not anyone's lab. Replace them.
+lab: example
+
+addresses:
+  # The core, on its two user-plane legs
+  10.1.3.1: core.n3
+  10.1.6.1: core.n6
+
+  # The base station, split into a brain and an antenna side
+  10.1.3.2: gnb-cu.n3
+  10.1.4.1: gnb-cu.f1
+  10.1.4.2: gnb-du.f1
+
+  # Phones. A range, because they are handed addresses as they attach.
+  1.1.1.0/24: subscriber
+
+  # The core's network functions, which talk to each other over a container
+  # network. List the ones you can pin down; the range catches the rest so they
+  # are named as something rather than appearing as bare numbers.
+  # 172.20.0.2: amf.sbi
+  # 172.20.0.3: smf.sbi
+  # 172.20.0.4: upf.sbi
+  # 172.20.0.0/16: core-function.sbi

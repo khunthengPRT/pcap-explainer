@@ -2,3 +2,9 @@ out/
 __pycache__/
 *.pyc
 .venv/
+
+# Lab profiles: addresses belong to whoever is running the lab, not to the
+# repository. The shared half of who-is-who is knowledge/topology.yaml.
+labs/*
+!labs/README.md
+knowledge/nodes.local.yaml

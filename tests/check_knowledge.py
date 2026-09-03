@@ -5,13 +5,33 @@ from pathlib import Path
 
 sys.path.insert(0, str(Path(__file__).resolve().parent.parent / "scripts"))
 from lib import knowledge  # noqa: E402
+from lib import nodes as node_lib  # noqa: E402
 
 problems = []
 
-nodes = knowledge.load_nodes()
-for ip, entry in nodes.items():
-    if not (entry or {}).get("name"):
-        problems.append(f"knowledge/nodes.yaml: {ip} has no name")
+topology = node_lib.load_topology()
+if not topology:
+    problems.append("knowledge/topology.yaml: no equipment defined")
+for node_id, entry in topology.items():
+    entry = entry or {}
+    if not entry.get("name"):
+        problems.append(f"knowledge/topology.yaml: {node_id} has no name")
+    if entry.get("role") not in node_lib.ROLES:
+        problems.append(f"knowledge/topology.yaml: {node_id} has role "
+                        f"{entry.get('role')!r}; expected one of "
+                        f"{', '.join(node_lib.ROLES)}")
+    interfaces = entry.get("interfaces")
+    if interfaces is not None and not isinstance(interfaces, dict):
+        problems.append(f"knowledge/topology.yaml: {node_id} interfaces "
+                        f"should be a mapping of id to label")
+
+# The committed example has to stay loadable, since it is what people copy and
+# what the fallback uses when no lab profile is chosen.
+for name in ("nodes.yaml", "addresses.example.yaml"):
+    try:
+        node_lib.read_profile(node_lib.KNOWLEDGE / name, topology)
+    except node_lib.ProfileError as error:
+        problems.append(f"knowledge/{name}: {error}")
 
 terms, banned = knowledge.load_glossary()
 if not terms:

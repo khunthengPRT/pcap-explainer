@@ -12,10 +12,21 @@ number in the report has to come out of a script.
 
 1. **Survey.** `bash scripts/survey.sh <pcap>`
 
-   It exits non-zero if any address is missing from `knowledge/nodes.yaml`.
-   That is not a failure to work around: add the addresses, with names a
-   non-engineer would recognise, and ask the user if you cannot tell what a
-   piece of equipment is. A report full of bare IP addresses is a bad report.
+   It exits non-zero if any address is missing from the active lab profile.
+   That is not a failure to work around: add the addresses, pointing each at
+   equipment in `knowledge/topology.yaml`, and ask the user if you cannot tell
+   what a piece of equipment is. A report full of bare IP addresses is a bad
+   report.
+
+   If the user works with more than one lab, ask which lab this capture is
+   from and pass `bash scripts/survey.sh <pcap> --nodes <profile>`, or set
+   `$PCAP_LAB`. Do not infer it from the addresses: labs reuse ranges, and
+   the wrong profile produces a report that names the wrong equipment without
+   anything looking amiss.
+
+   Put names and descriptions in `knowledge/topology.yaml` (shared, committed)
+   and addresses in the lab profile (local, never committed). Never write a
+   real lab's addresses into a tracked file.
 
 2. **Extract.** `python scripts/1_extract.py <pcap> out/events.csv`
 
@@ -40,6 +51,10 @@ number in the report has to come out of a script.
 
 6. **Report the gaps.** If `knowledge/_unknown.yaml` is non-empty, tell the
    user how many gaps there are and offer to run the `pcap-learn` skill.
+
+7. **If the report is going anywhere.** The address column is the one place a
+   report carries a lab's numbering. If the user mentions sending it on, offer
+   `--redact-addresses`, which prints the names without the numbers.
 
 ## Rules
 
