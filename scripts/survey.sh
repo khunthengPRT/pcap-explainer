@@ -20,9 +20,16 @@ if [ ! -f "$PCAP" ]; then
     echo "capture not found: $PCAP" >&2
     exit 1
 fi
+# shellcheck source=lib/find_python.sh
+. "$ROOT/scripts/lib/find_python.sh"
+
 for tool in tshark capinfos; do
     if ! command -v "$tool" >/dev/null 2>&1; then
-        echo "$tool not found on PATH. Install tshark (Debian/Ubuntu: sudo apt install tshark)." >&2
+        echo "$tool not found on PATH. Install Wireshark's command line tools:" >&2
+        echo "  Debian/Ubuntu: sudo apt install tshark" >&2
+        echo "  macOS:         brew install wireshark" >&2
+        echo "  Windows:       install Wireshark, then add its folder to PATH" >&2
+        echo "                 (see windows-setup.md)" >&2
         exit 1
     fi
 done
@@ -44,4 +51,4 @@ echo "=== Do we know who these addresses are? ==="
 # tunnel belong to subscribers and the internet, and are not ours to name
 tshark -r "$PCAP" -T fields -E occurrence=f -e ip.src -e ip.dst 2>/dev/null \
     | tr '\t' '\n' | grep -v '^$' | sort -u \
-    | python3 "$ROOT/scripts/lib/check_nodes.py"
+    | "$PYTHON" "$ROOT/scripts/lib/check_nodes.py"

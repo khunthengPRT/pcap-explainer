@@ -1,0 +1,5 @@
+# Check everything out with LF endings, on Windows too. The shell scripts do
+# not run with CRLF under Git Bash, and the golden-report tests compare files
+# byte for byte, so a CRLF checkout fails them all.
+* text=auto eol=lf
+*.pcap binary

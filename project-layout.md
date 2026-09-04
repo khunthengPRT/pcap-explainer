@@ -5,6 +5,8 @@ pcap-explainer/
 ├── CLAUDE.md                       # always loaded: the rules
 ├── README.md                       # what this is, and how to run it
 ├── pipeline.md                     # what each stage does
+├── windows-setup.md                # the same, on a Windows PC
+├── .gitattributes                  # LF checkout everywhere, incl. Windows
 ├── .claude/
 │   ├── skills/
 │   │   ├── pcap-analyze/SKILL.md   # run the pipeline end to end
@@ -30,7 +32,8 @@ pcap-explainer/
 │   ├── sync_codes.py               # regenerate spec names from tshark
 │   └── lib/
 │       ├── knowledge.py            # loading and lookup for knowledge/
-│       └── check_nodes.py          # the unnamed-address check in survey.sh
+│       ├── check_nodes.py          # the unnamed-address check in survey.sh
+│       └── find_python.sh          # python3-or-python, for the shell scripts
 ├── references/
 │   └── report-template.md          # the shape a report has to take
 ├── samples/
