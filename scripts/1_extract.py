@@ -49,7 +49,9 @@ def run_tshark(pcap, display_filter):
         sys.exit(
             "tshark not found on PATH.\n"
             "  Debian/Ubuntu: sudo apt install tshark\n"
-            "  macOS:         brew install wireshark"
+            "  macOS:         brew install wireshark\n"
+            "  Windows:       install Wireshark, then add its folder to PATH\n"
+            "                 (see windows-setup.md)"
         )
     cmd = ["tshark", "-r", str(pcap), "-Y", display_filter, "-T", "fields",
            "-E", "separator=,", "-E", "quote=d", "-E", "occurrence=f"]

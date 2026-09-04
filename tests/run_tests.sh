@@ -10,6 +10,8 @@ set -uo pipefail
 
 ROOT="$(cd "$(dirname "${BASH_SOURCE[0]}")/.." && pwd)"
 cd "$ROOT"
+# shellcheck source=../scripts/lib/find_python.sh
+. "$ROOT/scripts/lib/find_python.sh"
 WORK="$(mktemp -d)"
 trap 'rm -rf "$WORK"' EXIT
 
@@ -30,29 +32,31 @@ check() {  # check <name> <command...>
 
 echo "knowledge base"
 check "code tables match the tshark dissector" \
-    python3 scripts/sync_codes.py --check
+    "$PYTHON" scripts/sync_codes.py --check
 check "every knowledge file is valid YAML" \
-    python3 tests/check_knowledge.py
+    "$PYTHON" tests/check_knowledge.py
 
 echo "stages 2 and 3, from a checked-in CSV"
-python3 scripts/2_sessionize.py tests/fixtures/ngap-attach.csv "$WORK/ngap.json" >/dev/null 2>&1
-python3 scripts/3_render.py "$WORK/ngap.json" "$WORK/ngap.md" \
+"$PYTHON" scripts/2_sessionize.py tests/fixtures/ngap-attach.csv "$WORK/ngap.json" >/dev/null 2>&1
+"$PYTHON" scripts/3_render.py "$WORK/ngap.json" "$WORK/ngap.md" \
     --title "the lab radio site" --no-learn >/dev/null 2>"$WORK/ngap.warn"
 check "the radio-site report is unchanged" \
     diff -u tests/expected/ngap-attach.report.md "$WORK/ngap.md"
 check "the radio-site report contains no jargon" \
     test ! -s "$WORK/ngap.warn"
 check "the unexplained message type was spotted" \
-    python3 tests/check_gaps.py "$WORK/ngap.json" ngap 58
+    "$PYTHON" tests/check_gaps.py "$WORK/ngap.json" ngap 58
 
 echo "the whole pipeline, from a capture"
 if command -v tshark >/dev/null 2>&1; then
-    check "the sample capture rebuilds byte for byte" \
-        bash -c 'python3 tests/make_sample.py "'"$WORK"'/sample.pcap" >/dev/null &&
-                 cmp "'"$WORK"'/sample.pcap" samples/lab-session.pcap'
-    python3 scripts/1_extract.py samples/lab-session.pcap "$WORK/events.csv" >/dev/null 2>&1
-    python3 scripts/2_sessionize.py "$WORK/events.csv" "$WORK/flows.json" >/dev/null 2>&1
-    python3 scripts/3_render.py "$WORK/flows.json" "$WORK/report.md" \
+    sample_rebuilds() {
+        "$PYTHON" tests/make_sample.py "$WORK/sample.pcap" >/dev/null &&
+            cmp "$WORK/sample.pcap" samples/lab-session.pcap
+    }
+    check "the sample capture rebuilds byte for byte" sample_rebuilds
+    "$PYTHON" scripts/1_extract.py samples/lab-session.pcap "$WORK/events.csv" >/dev/null 2>&1
+    "$PYTHON" scripts/2_sessionize.py "$WORK/events.csv" "$WORK/flows.json" >/dev/null 2>&1
+    "$PYTHON" scripts/3_render.py "$WORK/flows.json" "$WORK/report.md" \
         --title "the lab core network" --no-learn >/dev/null 2>"$WORK/report.warn"
     check "the core-network report is unchanged" \
         diff -u tests/expected/lab-session.report.md "$WORK/report.md"

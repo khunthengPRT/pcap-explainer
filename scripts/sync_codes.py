@@ -35,7 +35,11 @@ def dissector_values(field):
             ["tshark", "-G", "values"], capture_output=True, text=True, check=True
         ).stdout
     except FileNotFoundError:
-        sys.exit("tshark not found on PATH. Install wireshark-cli / tshark first.")
+        sys.exit(
+            "tshark not found on PATH. Install wireshark-cli / tshark first.\n"
+            "On Windows, install Wireshark and add its folder to PATH "
+            "(see windows-setup.md)."
+        )
     values = {}
     for line in out.splitlines():
         parts = line.split("\t")

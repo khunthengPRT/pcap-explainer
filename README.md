@@ -47,7 +47,8 @@ sentence traces back to a file you can read and correct.
 ## Getting started
 
 Needs Python 3.9+, `pyyaml`, and `tshark` (Debian/Ubuntu:
-`sudo apt install tshark`; macOS: `brew install wireshark`).
+`sudo apt install tshark`; macOS: `brew install wireshark`; Windows: see
+[`windows-setup.md`](windows-setup.md)).
 
 ```bash
 bash scripts/survey.sh capture.pcap      # what is in here, and do we know who is who?
@@ -69,6 +70,7 @@ Then run the three stages above, or ask Claude: `/explain capture.pcap`.
 | `knowledge/_unknown.yaml` | Message types still waiting for a description |
 | `scripts/` | The pipeline: survey, extract, sessionize, render |
 | `references/report-template.md` | The shape a report has to take |
+| `windows-setup.md` | Getting the above running on a Windows PC |
 | `samples/`, `tests/` | A synthetic capture and the golden reports |
 
 Protocols covered: NGAP, F1AP, PFCP, GTP-U, and enough SCTP to tell whether
